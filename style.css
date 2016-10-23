@@ -1,0 +1,48 @@
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+.game {
+  width: 1138px; height: 607px;
+  background: url("img/game-fon.jpg");
+  position: relative;
+}
+
+#gameCanvas {
+  position: absolute;
+  top: 139px; left: 295px;
+}
+
+.gameControl {
+  background: url("img/buttonGame-77x74.png") 0 0;
+  width: 77px; height: 74px;
+  border-radius: 37px;
+  border: 0;
+  position: absolute;
+}
+.gameControl:active {
+  background: url("img/buttonGame-77x74.png") -77px 0;
+}
+.gameControl.gc-0-0 {
+    left: 85px;
+    bottom: 148px;
+}
+.gameControl.gc-0-1 {
+  left: 85px;
+  bottom: 39px;
+}
+.gameControl.gc-1-0 {
+  right: 85px;
+  bottom: 148px;
+}
+.gameControl.gc-1-1 {
+  right: 85px;
+  bottom: 39px;
+}
+
+
+#testBlock {
+  position: absolute;
+  top: 139px; left: 295px;
+}
