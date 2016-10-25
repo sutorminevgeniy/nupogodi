@@ -25,6 +25,31 @@
       that.loaded = true;
     });
   }
+  Figura.prototype.draw = function (pos0, pos1, x, y, a) {
+    var that = this;
+
+    var drawImg = function (){
+      ctx.save();
+      // поворот вокруг центра рисунка
+      ctx.translate(x + that.width / 2, y + that.height / 2);
+      ctx.rotate(a);
+      // прорисовка изображения
+      ctx.drawImage(that.dom, 
+                  that.width*pos0, that.height*pos1, 
+                  that.width, that.height, 
+                  0 - that.width / 2, - that.height / 2, 
+                  that.width, that.height);
+      ctx.restore();
+    }
+  
+    if(that.loaded){
+      drawImg();
+    } else {
+      that.dom.addEventListener('load', function (){
+        drawImg();
+      });
+    }
+  }
   Figura.prototype.drawImage = function (pos0, pos1) {
     var that = this;
     var drawImg = function (){
@@ -68,8 +93,33 @@
   }
 
   var volf = new Volf();
-
   volf.drawImageAll();
+
+  function Egg(){
+    this.egg = new Figura("img/egg-19x19.png", 
+                              19, 19, 
+                              [[[166, 152]],
+                               [[287, 152]]]);
+  }
+  Egg.prototype.drawImage = function (pos0, pos1) {
+    this.egg.drawImage(pos0, pos1);
+  }
+  Egg.prototype.drawImageAll = function () {
+    this.egg.draw(0, 0, 32, 107, 0.6);
+    this.egg.draw(0, 0, 49, 117, 1.2);
+    this.egg.draw(0, 0, 65, 128, 3);
+    this.egg.draw(0, 0, 79, 137, 4.5);
+    this.egg.draw(0, 0, 94, 145, 5.9);
+
+    this.egg.draw(0, 0, gameScreenWidth - 22 - 32, 107, -0.6);
+    this.egg.draw(0, 0, gameScreenWidth - 22 - 49, 117, -1.2);
+    this.egg.draw(0, 0, gameScreenWidth - 22 - 65, 128, -3);
+    this.egg.draw(0, 0, gameScreenWidth - 22 - 79, 137, -4.5);
+    this.egg.draw(0, 0, gameScreenWidth - 22 - 94, 145, -5.9);
+  }
+
+  var egg = new Egg();
+  egg.drawImageAll();
 
   // обработчик кнопок управления
   var bottonsControl = document.querySelectorAll('.gameControl');

@@ -44,5 +44,6 @@
 
 #testBlock {
   position: absolute;
+  width: 544px; height: 327px;
   top: 139px; left: 295px;
 }
