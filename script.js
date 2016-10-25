@@ -75,7 +75,7 @@
   var bottonsControl = document.querySelectorAll('.gameControl');
   for(var i=0; i<bottonsControl.length; i++){
 
-    bottonsControl[i].addEventListener('click', function(event){
+    bottonsControl[i].addEventListener('mousedown', function(event){
       var bottonControl = event.target;
       var pos = bottonControl.getAttribute('data-control').split('-');
 
