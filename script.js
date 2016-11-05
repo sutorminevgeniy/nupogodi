@@ -29,10 +29,11 @@
   }
   Figura.prototype.draw = function (pos0, pos1, x, y, a) {
     var that = this;
+    a = a || 0;
 
     var drawImg = function (){
       ctx.save();
-      // поворот вокруг центра рисунка
+      // смещение и поворот вокруг центра рисунка
       ctx.translate(x + that.width / 2, y + that.height / 2);
       ctx.rotate(a);
       // прорисовка изображения
@@ -41,6 +42,7 @@
                   that.width, that.height, 
                   0 - that.width / 2, - that.height / 2, 
                   that.width, that.height);
+      // возвращение к исходной системе
       ctx.restore();
     }
   
@@ -195,13 +197,46 @@
     this.egg.draw(0, 0, gameScreenWidth - 22 - 94, 145 + 73, -5.9);
   }
 
+  // Объект для волка с карзиной
+  function Score(){
+    this.num = new Figura("img/nums.png", 31, 47, 
+                              [[[166, 152]],
+                               [[287, 152]]]);
+
+    this.score = 0;
+  }
+  Score.prototype.set = function (score) {
+    this.score = score;
+  }
+  Score.prototype.check = function (volf, eggs) {
+    for(var i=0; i < eggs.eggs.length; i++){
+      if(eggs.eggs[i].curPos[2] == 4 
+      && eggs.eggs[i].curPos[0] == volf.curPos[0]
+      && eggs.eggs[i].curPos[1] == volf.curPos[1]){
+        this.score++;
+      }
+    }
+  }
+  Score.prototype.drawImage = function () {
+    var x = 410,
+        y = 30,
+        tscore = this.score;
+    do {
+      this.num.draw(tscore % 10, 0, x, y);
+      tscore = Math.floor(tscore / 10);
+      x = x - 31;
+    } while(tscore > 0);
+  }
+
+
   var volf = new Volf();
   var eggs = new Eggs();
+  var score = new Score();
   volf.drawImageAll();
   eggs.drawImageAll();
 
-  var speed = 50,
-        step = 0;
+  var speed = 100,
+      step = 0;
   stepAnimation();
 
   function stepAnimation() {
@@ -212,8 +247,11 @@
     // рисование фигур
     volf.drawImage();
     eggs.drawImage();
+    score.drawImage();
+    
     
     if(++step >= speed){
+      score.check(volf, eggs);
       step = 0;
       eggs.increnent();
     }
@@ -231,6 +269,35 @@
     });
   }
 
+  document.addEventListener('keydown', function(event){
+      var kCode = event.keyCode;
+      var pos = false;
+
+      switch (kCode){
+        case 81:
+        // q
+          pos = [0, 0];
+          break;
+        case 65:
+        // a
+          pos = [0, 1];
+          break;
+        case 219:
+        // [
+          pos = [1, 0];
+          break;
+        case 222:
+        // '
+          pos = [1, 1];
+          break;
+        default:
+          return;
+      }
+
+      // смена позиции волка
+      volf.setPos(pos);
+    });
+
   var testBl = document.getElementById('testBlock');
   // testBl.appendChild(imgBasket.dom);
-}());
+})();
